@@ -33,7 +33,7 @@ app.get('/books', async (req, res) => {
 // GET /books/:id
 app.get('/books/:id', async (req, res) => {
   try {
-    const db = getDb();
+    const db = await getDb();
 
     const book = await db
       .collection('books')
