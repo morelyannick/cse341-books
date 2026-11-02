@@ -54,4 +54,8 @@ app.get('/books/:id', async (req, res) => {
   }
 });
 
+// Route for retrieving a single book by id
+app.get('/books/:id', async (req, res) => {
+});
+
 export default app;
