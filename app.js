@@ -1,9 +1,11 @@
 import express from 'express';
+import router from './scr/router.js';
 import { getDb } from './data/database.js';
 
 const app = express();
 
 app.use(express.json());
+app.use(router);
 
 app.get('/', (req, res) => {
   return res.status(200).json({
