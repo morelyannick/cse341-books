@@ -1,20 +1,69 @@
 import express from 'express';
-import router from './scr/router.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json' with { type: 'json' };
 import { getDb } from './data/database.js';
 
 const app = express();
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(express.json());
-app.use(router);
 
 app.get('/', (req, res) => {
-  return res.status(200).json({ message: 'Server is running' });
   return res.status(200).json({
     message: 'Server is running'
   });
 });
 
-// GET /books
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Book:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: MongoDB document identifier
+ *         id:
+ *           type: string
+ *           description: Book ID
+ *         title:
+ *           type: string
+ *           description: Title of the book
+ *         author:
+ *           type: string
+ *           description: Author of the book
+ *         genre:
+ *           type: string
+ *           description: Genre of the book
+ *     Error:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           example: Internal Server Error
+ * /books:
+ *   get:
+ *     tags:
+ *       - Books
+ *     summary: Get all books
+ *     description: Retrieve a list of all books from the database.
+ *     responses:
+ *       200:
+ *         description: A list of books.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Book'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 app.get('/books', async (req, res) => {
   try {
     const db = await getDb();
@@ -33,7 +82,41 @@ app.get('/books', async (req, res) => {
   }
 });
 
-// GET /books/:id
+/**
+ * @openapi
+ * /books/{id}:
+ *   get:
+ *     tags:
+ *       - Books
+ *     summary: Get a single book by ID
+ *     description: Retrieve a single book by its unique ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique ID of the book.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The requested book.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       404:
+ *         description: Book not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 app.get('/books/:id', async (req, res) => {
   try {
     const db = await getDb();
@@ -55,10 +138,6 @@ app.get('/books/:id', async (req, res) => {
       message: 'Internal Server Error'
     });
   }
-});
-
-// Route for retrieving a single book by id
-app.get('/books/:id', async (req, res) => {
 });
 
 export default app;

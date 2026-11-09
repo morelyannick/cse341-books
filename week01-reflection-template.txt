@@ -1,0 +1,37 @@
+# Week 01 Reflection
+
+1. Include a link to one of your Pull Requests (PRs) at GitHub. (It should be merged and closed at this point.)
+
+GitHub Pull Request Link: https://github.com/morelyannick/cse341-books/pull/7
+
+2. Include a link to one of your Issues at GitHub. (It should be closed at this point.)
+
+GitHub Issue Link: https://github.com/morelyannick/cse341-books/issues/2
+
+3. Which issue took more or less time than expected? Why?
+
+Answer: Issue #3 took more time than expected. The route worked locally, but I encountered deployment and MongoDB configuration issues after deploying to Render. I had to troubleshoot environment variables, database connections, and HTTP status codes before everything worked correctly.
+
+4. Include a link to your walk-though video. (It must include your name, show your web service working at Render, explain the way your `Get Single Book` controller works, and discuss status codes.):
+
+Video link:
+
+5.a. Include a GitHub link to a file that shows how your app uses sensitive data, such as the MongoDB connection string.
+
+GitHub link: https://github.com/morelyannick/cse341-books/blob/main/src/db/connect.js
+
+5.b. How did you store sensitive data? Why is that approach important?
+
+Answer: I stored sensitive data in environment variables instead of hardcoding credentials into the source code. This approach protects secrets such as the MongoDB connection string and prevents them from being exposed in the GitHub repository.
+
+6.a. Include a GitHub link to a file that shows one other implementation decision you made.
+
+GitHub link: https://github.com/morelyannick/cse341-books/blob/main/app.js
+
+6.b. What decision does this file show, and why did you make that choice?
+
+Answer: This file shows my decision to implement explicit HTTP status codes and error handling for the API routes. I chose this approach so that clients can clearly distinguish between successful requests (200), missing resources (404), and unexpected server errors (500).
+
+7. What is one specific habit or process you will work on for next week?
+
+Answer: Next week, I will work on creating a branch before starting each issue and following the complete GitHub workflow: Issue → Branch → Pull Request → Merge. This will help me stay organized and avoid committing directly to the main branch.
