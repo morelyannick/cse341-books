@@ -6,6 +6,13 @@ import {
   updateAuthor,
   deleteAuthor
 } from './controllers/authors.js';
+import {
+  getAllBooks,
+  getBookById,
+  createBook,
+  updateBook,
+  deleteBook
+} from './controllers/books.js';
 
 const router = express.Router();
 
@@ -151,5 +158,156 @@ router.put('/authors/:id', updateAuthor);
  *         description: Unable to delete author
  */
 router.delete('/authors/:id', deleteAuthor);
+
+/**
+ * @openapi
+ * /books:
+ *   get:
+ *     summary: Get all books
+ *     tags:
+ *       - Books
+ *     responses:
+ *       200:
+ *         description: A list of books
+ *       500:
+ *         description: Unable to retrieve books
+ */
+router.get('/books', getAllBooks);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   get:
+ *     summary: Get a book by ID
+ *     tags:
+ *       - Books
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The requested book
+ *       404:
+ *         description: Book not found
+ *       500:
+ *         description: Unable to retrieve book
+ */
+router.get('/books/:id', getBookById);
+
+/**
+ * @openapi
+ * /books:
+ *   post:
+ *     summary: Create a book
+ *     tags:
+ *       - Books
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             properties:
+ *               id:
+ *                 type: string
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             id: b1
+ *             authorId: a1
+ *             title: Pride and Prejudice
+ *             publicationDate: '1813-01-28'
+ *     responses:
+ *       201:
+ *         description: The created book
+ *       400:
+ *         description: Missing fields, duplicate book ID, or author not found
+ *       500:
+ *         description: Unable to create book
+ */
+router.post('/books', createBook);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   put:
+ *     summary: Update a book
+ *     tags:
+ *       - Books
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             properties:
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             authorId: a1
+ *             title: Pride and Prejudice
+ *             publicationDate: '1813-01-28'
+ *     responses:
+ *       200:
+ *         description: The updated book
+ *       400:
+ *         description: Missing fields or author not found
+ *       404:
+ *         description: Book not found
+ *       500:
+ *         description: Unable to update book
+ */
+router.put('/books/:id', updateBook);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   delete:
+ *     summary: Delete a book
+ *     tags:
+ *       - Books
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Book deleted
+ *       404:
+ *         description: Book not found
+ *       500:
+ *         description: Unable to delete book
+ */
+router.delete('/books/:id', deleteBook);
 
 export default router;
